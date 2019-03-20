@@ -2,9 +2,6 @@ import uuid
 
 from django.db import models
 from django.urls import reverse
-from django.dispatch import receiver
-from django.contrib.auth.models import User
-from django.db.models.signals import post_save
 
 from ..service.service import communication
 
@@ -20,7 +17,7 @@ class LedLight(models.Model):
         (OFF, 'off')
     )
     id = models.UUIDField(primary_key=True, default=uuid.uuid4)
-    owner = models.ForeignKey('auth.User', related_name='leds',
+    owner = models.ForeignKey('auth.User', related_name='ledlight',
                               on_delete=models.CASCADE)
     title = models.CharField(max_length=100, blank=False)
     address = models.CharField(max_length=100, default=None)
