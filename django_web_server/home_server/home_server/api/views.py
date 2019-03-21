@@ -1,10 +1,9 @@
 from django.contrib.auth.models import User
-from django.views.decorators.csrf import csrf_exempt
 
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from rest_framework.permissions import IsAdminUser
 from rest_framework import (
-    permissions,
     generics,
     status,
 )
@@ -13,7 +12,7 @@ from ..things.models import LedLight
 from .serializers import (
     LedLightSerializer,
     UserSerializer,
-    LedLightOnOffSerializer,
+    LedLightStateSerializer,
 )
 
 
@@ -28,24 +27,24 @@ class UserDetail(generics.RetrieveAPIView):
 
 
 class LedLightList(generics.ListCreateAPIView):
-    permission_classes = (permissions.IsAdminUser,)
-
+    permission_classes = (IsAdminUser,)
     queryset = LedLight.objects.all()
     serializer_class = LedLightSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
 
 
 class LedLightDetail(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = (permissions.IsAdminUser,)
-
+    permission_classes = (IsAdminUser,)
     queryset = LedLight.objects.all()
     serializer_class = LedLightSerializer
 
 
-class LedLightOnOff(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = (permissions.IsAdminUser,)
-
+class LedLightState(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = (IsAdminUser,)
     queryset = LedLight.objects.all()
-    serializer_class = LedLightOnOffSerializer
+    serializer_class = LedLightStateSerializer
 
 
 @api_view(['PUT', 'GET'])
@@ -57,7 +56,7 @@ def led_on_off(request, pk, format=None):
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     if led.owner == request.user or request.user.is_superuser:
-        serializer = LedLightOnOffSerializer(led, data=request.data)
+        serializer = LedLightStateSerializer(led, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)

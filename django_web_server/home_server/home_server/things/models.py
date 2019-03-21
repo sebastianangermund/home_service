@@ -10,18 +10,21 @@ class LedLight(models.Model):
     """Model representing a led light.
 
     """
-    ON = '1'
+    INACTIVE = '-'
     OFF = '0'
-    STATE_CHHOICES = (
-        (ON, 'on'),
-        (OFF, 'off')
+    ON = '1'
+    STATE_CHOICES = (
+        (INACTIVE, 'inactive'),
+        (OFF, 'off'),
+        (ON, 'on')
     )
     id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     owner = models.ForeignKey('auth.User', related_name='ledlight',
                               on_delete=models.CASCADE)
-    title = models.CharField(max_length=100, blank=False)
-    address = models.CharField(max_length=100, default=None)
-    state = models.CharField(max_length=1, choices=STATE_CHHOICES, default='0')
+    title = models.CharField(max_length=64, blank=False)
+    address = models.CharField(max_length=64, null=True,
+                               blank=True, default='')
+    state = models.CharField(max_length=1, choices=STATE_CHOICES, default='-')
 
     class Meta:
         ordering = ['state', 'owner']
@@ -30,22 +33,25 @@ class LedLight(models.Model):
         if self.address:
             return f'http://{self.address}:80/{self.id}'
         else:
-            return self.title
+            return f'{self.title} * has no address *'
 
     def get_absolute_url(self):
         return reverse('thing-detail', args=[str(self.id)])
 
     def get_state(self):
-        payload = f'{self}/?state/'
+        payload = f'{self}/state/'
         return communication(payload)
 
     def save(self, *args, **kwargs):
-        payload = f'{self}/{self.state}/'
-        print(payload)
-        response = communication(payload)
-        if response == 200:
+        if self.state == '-':
             super(LedLight, self).save(*args, **kwargs)
-        elif type(response) == int:
-            raise Exception(f'Status code {response} when trying {self}')
         else:
-            raise Exception(f'{response}')
+            payload = f'{self}/{self.state}/'
+            response = communication(payload)
+            if response == 200:
+                super(LedLight, self).save(*args, **kwargs)
+            elif type(response) == int:
+                raise Exception(f'Status code {response} when making '
+                                f'request {payload}')
+            else:
+                raise Exception(f'{response}')

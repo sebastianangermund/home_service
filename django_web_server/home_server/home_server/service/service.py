@@ -42,7 +42,7 @@ def communication(payload):
     """Convert to http request and forward.
 
     """
-    # payload = 'http://localhost:80'
+    # payload = 'http://localhost:80/'  # use for testing
     try:
         response = requests.request('GET', payload, timeout=5)
         return response.status_code

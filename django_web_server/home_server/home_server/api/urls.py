@@ -16,7 +16,7 @@ led_urls = [
          name='led-list-all'),
     path('things/ledlights/<uuid:pk>/', views.LedLightDetail.as_view(),
          name='led-detail'),
-    path('things/ledlights/<uuid:pk>/status/', views.LedLightOnOff.as_view(),
+    path('things/ledlights/<uuid:pk>/state/', views.LedLightState.as_view(),
          name='led-status'),
 ]
 

@@ -27,6 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+CSRF_USE_SESSIONS = True
 
 # Application definition
 
@@ -77,8 +78,12 @@ WSGI_APPLICATION = 'home_server.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'home_server',
+        'USER': 'sebbe',
+        'PASSWORD': '123Hejsan',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 
@@ -103,7 +108,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
     )
 }
 

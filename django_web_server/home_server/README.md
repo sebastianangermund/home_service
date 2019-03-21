@@ -1,4 +1,4 @@
-api endpoints:
+* api endpoints:
 
 ------------ ## /things/ledlights/
 
@@ -8,11 +8,11 @@ GET
 
 POST
 
-create a new ledlight thing. owner and id is set automatically
+create a new ledlight thing.
 
+payload should look like:
 {
 	"title": "some_title",
-	"on": "false"
 }
 
 ------------ ## /things/ledlights/uuid/
@@ -46,7 +46,10 @@ allowed payloads:
 	"on": "true"
 }
 ´
------------- ## /things/ledlights/uuid/state/
+
+* arduino endpoints:
+
+------------ ## /uuid/state/
 
 GET
 
@@ -54,19 +57,27 @@ example return
 ´
 OBSOBSOBSOBS !
 ´
+
+------------ ## /uuid/0/
+
+PUT
+
+------------ ## /uuid/1/
+
+PUT
+
 --------------------------------------------------------------------------------
 
 SPRINT
 
-* [API] Use SessionAuthentication
-* [ARDUINO] Add ping on to ESP
-* [ARDUINO] Fix getState in ESP 
-* [ARDUINO] ESP should loop reconnection to wifi after power outage + arduino should loop its script too.
+* [RASP] Start hosting on RaspberryPi
+* [ARDUINO] Add ping to ESP
 * [ARDUINO]+[THINGS] Change endpoint "status" to "update"
-* Setup logging service that:
-    * Periodically gather status data from things.
-    * Stores the data in (separate? time series?) database.
-    * Has a graphics function.
+* [ARDUINO] Add ping to ESP
+* [ARDUINO] Fix getState in ESP
+* [THINGS] maybe do something with the returned text from arduinos?
+* [ARDUINO]+[THINGS] things should update states automatically in some time interval.
+
 * Setup control/analytics service that:
     * Bases control on analysis of logging data.
     * Has an interface which let you choose when and how to analyse/control data.
@@ -74,12 +85,22 @@ SPRINT
 * Look into:
 	* Safety for opening ports on local network
 	* Static vs. dynamic IP's - Is it possible to host on dynamic IP?
-* Start hosting on RaspberryPi
+* Arduino and ESP should be more reliable:
+	* ESP should loop reconnection to wifi after power outage.
+	* Arduino should continue loop its script after power outage.
+	* Fix external power supply for ESP
+
+DOING
+
+* Setup logging service that:
+    * Periodically gather status data from things.
+    * Stores the data in (separate? time series?) database.
+    * Has a graphics function.
 
 DONE
 
-* All ESP’s should be identified with the ID generated when creating its thing.
-* Return response to things from communication
-* Setup authentication in ESP (keep ID secret)
+* [ARDUINO] All ESP’s should be identified with the ID generated when creating its thing.
+* [SERVICE] Return response to things from communication
+* [ARDUINO] Setup authentication in ESP (keep ID secret)
     * Test opening up port on router to allow non local requests
-
+* [API] Use SessionAuthentication

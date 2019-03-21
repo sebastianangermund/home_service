@@ -23,7 +23,7 @@ class LedLightSerializer(serializers.ModelSerializer):
         read_only_fields = ['owner', 'state', 'id']
 
 
-class LedLightOnOffSerializer(serializers.ModelSerializer):
+class LedLightStateSerializer(serializers.ModelSerializer):
     class Meta:
         model = LedLight
         fields = ['state']
