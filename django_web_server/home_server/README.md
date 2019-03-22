@@ -32,7 +32,7 @@ DELETE
 
 deletes instance
 
------------- ## /things/ledlights/uuid/status/ 
+------------ ## /things/ledlights/uuid/state/ 
 
 PUT
 
@@ -49,20 +49,17 @@ allowed payloads:
 
 * arduino endpoints:
 
------------- ## /uuid/state/
+------------ ## address/uuid/state/
 
 GET
 
-example return
-´
-OBSOBSOBSOBS !
-´
+returns
 
------------- ## /uuid/0/
+------------ ## address/uuid/0/
 
 PUT
 
------------- ## /uuid/1/
+------------ ## address/uuid/1/
 
 PUT
 
@@ -70,6 +67,7 @@ PUT
 
 SPRINT
 
+* [ARDUINO]+[THINGS] should be getstate and setstate.
 * [RASP] Start hosting on RaspberryPi
 * [ARDUINO] Add ping to ESP
 * [ARDUINO]+[THINGS] Change endpoint "status" to "update"

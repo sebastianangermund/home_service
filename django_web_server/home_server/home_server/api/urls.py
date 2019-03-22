@@ -17,7 +17,7 @@ led_urls = [
     path('things/ledlights/<uuid:pk>/', views.LedLightDetail.as_view(),
          name='led-detail'),
     path('things/ledlights/<uuid:pk>/state/', views.LedLightState.as_view(),
-         name='led-status'),
+         name='led-state'),
 ]
 
 urlpatterns = user_urls + auth_urls + led_urls

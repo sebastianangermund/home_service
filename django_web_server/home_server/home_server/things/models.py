@@ -3,7 +3,7 @@ import uuid
 from django.db import models
 from django.urls import reverse
 
-from ..service.service import communication
+from ..service.service import communication, get_state
 
 
 class LedLight(models.Model):
@@ -36,11 +36,11 @@ class LedLight(models.Model):
             return f'{self.title} * has no address *'
 
     def get_absolute_url(self):
-        return reverse('thing-detail', args=[str(self.id)])
+        return reverse('led-detail', args=[str(self.id)])
 
     def get_state(self):
         payload = f'{self}/state/'
-        return communication(payload)
+        return get_state(payload)
 
     def save(self, *args, **kwargs):
         if self.state == '-':

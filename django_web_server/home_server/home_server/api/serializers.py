@@ -19,7 +19,7 @@ class LedLightSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = LedLight
-        fields = ['title', 'owner', 'state', 'id']
+        fields = ['title', 'owner', 'state', 'id', 'address']
         read_only_fields = ['owner', 'state', 'id']
 
 
