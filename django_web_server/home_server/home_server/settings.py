@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'home_server.things.apps.ThingsConfig',
+    'home_server.analytics.apps.AnalyticsConfig',
 ]
 
 MIDDLEWARE = [

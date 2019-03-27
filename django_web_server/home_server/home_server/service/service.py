@@ -2,6 +2,17 @@ import requests
 import pika
 import json
 
+from ..analytics.models import LedLightData
+
+
+""" There should be a function that runs logging every x minutes
+"""
+
+
+def schedule_ledlight_data_update():
+    queryset = LedLightData.objects.all()
+    logging_service(queryset)
+
 
 def communication_2(payload):
     connection = pika.BlockingConnection(
@@ -26,38 +37,18 @@ def communication_2(payload):
     connection.close()
 
 
-# adress = '192.168.1.58'
-# adress = 'localhost'
-# port = '80'
-
-# connection = pika.BlockingConnection(
-#     pika.ConnectionParameters(host='localhost')
-# )
-# channel = connection.channel()
-# channel.queue_delete(queue='home_server')
-# channel.queue_declare(queue='home_server')
+def logging_service(queryset):
+    for thing in queryset:
+        thing.write_data_point
 
 
-def communication(payload):
+def request_get(payload):
     """Convert to http request and forward.
 
     """
     # payload = 'http://localhost:80/'  # use for testing
     try:
         response = requests.request('GET', payload, timeout=5)
-        return response.status_code
-    except requests.exceptions.Timeout as e:
-        return e
-
-
-def get_state(payload):
-    """Convert to http request and forward.
-
-    """
-    # payload = 'http://localhost:80/'  # use for testing
-    try:
-        response = requests.request('GET', payload, timeout=5)
-        print(response)
         return response
     except requests.exceptions.Timeout as e:
-        return e
+        return 'time out'

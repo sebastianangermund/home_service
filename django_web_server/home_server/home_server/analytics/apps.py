@@ -2,4 +2,5 @@ from django.apps import AppConfig
 
 
 class AnalyticsConfig(AppConfig):
-    name = 'analytics'
+    name = 'home_server.analytics'
+    verbose_name = "Analytics"

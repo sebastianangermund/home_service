@@ -82,18 +82,18 @@ SPRINT
     * Can be set to control automatically
 * Look into:
 	* Safety for opening ports on local network
-	* Static vs. dynamic IP's - Is it possible to host on dynamic IP?
+	* Static vs. dynamic IP's - Is it possible to host on dynamic IP? dns?
 * Arduino and ESP should be more reliable:
+	* Steps for uploading to arduino and ESP should be documented and work!
 	* ESP should loop reconnection to wifi after power outage.
 	* Arduino should continue loop its script after power outage.
-	* Fix external power supply for ESP
 
 DOING
 
 * Setup logging service that:
     * Periodically gather status data from things.
     * Stores the data in (separate? time series?) database.
-    * Has a graphics function.
+    * Has a graphics function (in template? trough api?).
 
 DONE
 
@@ -102,3 +102,4 @@ DONE
 * [ARDUINO] Setup authentication in ESP (keep ID secret)
     * Test opening up port on router to allow non local requests
 * [API] Use SessionAuthentication
+* Fix external power supply for ESP

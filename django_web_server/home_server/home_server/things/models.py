@@ -3,7 +3,7 @@ import uuid
 from django.db import models
 from django.urls import reverse
 
-from ..service.service import communication, get_state
+from ..service.service import request_get, LedLight
 
 
 class LedLight(models.Model):
@@ -40,15 +40,16 @@ class LedLight(models.Model):
 
     def get_state(self):
         payload = f'{self}/state/'
-        return get_state(payload)
+        payload = 'http://localhost:80/'  # use for testing
+        return request_get(payload)
 
     def save(self, *args, **kwargs):
         if self.state == '-':
             super(LedLight, self).save(*args, **kwargs)
         else:
             payload = f'{self}/{self.state}/'
-            response = communication(payload)
-            if response == 200:
+            response = request_get(payload)
+            if response.status_code == 200:
                 super(LedLight, self).save(*args, **kwargs)
             elif type(response) == int:
                 raise Exception(f'Status code {response} when making '
