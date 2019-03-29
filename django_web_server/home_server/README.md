@@ -87,13 +87,15 @@ SPRINT
 	* Steps for uploading to arduino and ESP should be documented and work!
 	* ESP should loop reconnection to wifi after power outage.
 	* Arduino should continue loop its script after power outage.
-
-DOING
-
 * Setup logging service that:
     * Periodically gather status data from things.
     * Stores the data in (separate? time series?) database.
     * Has a graphics function (in template? trough api?).
+
+DOING
+
+* [THINGS] Set up a webserver to fake arduino response during testing
+* [THINGS] Each app should have its own service and receiver file
 
 DONE
 

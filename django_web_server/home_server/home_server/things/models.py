@@ -3,7 +3,7 @@ import uuid
 from django.db import models
 from django.urls import reverse
 
-from ..service.service import request_get, LedLight
+from ..service.service import request_get
 
 
 class LedLight(models.Model):
