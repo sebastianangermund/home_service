@@ -3,7 +3,8 @@ import uuid
 from django.db import models
 from django.urls import reverse
 
-from ..service.service import request_get
+from .service import request_get
+from ..settings import DEBUG
 
 
 class LedLight(models.Model):
@@ -31,7 +32,7 @@ class LedLight(models.Model):
 
     def __str__(self):
         if self.address:
-            return f'http://{self.address}:80/{self.id}'
+            return f'http://{self.address}:89/{self.id}'
         else:
             return f'{self.title} * has no address *'
 
@@ -39,16 +40,23 @@ class LedLight(models.Model):
         return reverse('led-detail', args=[str(self.id)])
 
     def get_state(self):
-        payload = f'{self}/state/'
-        payload = 'http://localhost:80/'  # use for testing
+        payload = 'http://127.0.0.1:89/id/state/' if DEBUG \
+            else f'{self}/state/'
+
         return request_get(payload)
 
     def save(self, *args, **kwargs):
         if self.state == '-':
             super(LedLight, self).save(*args, **kwargs)
         else:
-            payload = f'{self}/{self.state}/'
+            payload = f'http://127.0.0.1:89/id/{self.state}/' if DEBUG \
+                else f'{self}/{self.state}/'
             response = request_get(payload)
+
+            print('\n')
+            print(response)
+            print('\n')
+
             if response.status_code == 200:
                 super(LedLight, self).save(*args, **kwargs)
             elif type(response) == int:
