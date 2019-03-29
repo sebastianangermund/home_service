@@ -1,7 +1,7 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import time
 
-hostName = "127.0.0.1"
+hostName = '127.0.0.1'
 hostPort = 89
 state = 'ON'
 
@@ -20,12 +20,10 @@ class MyLedLightServer(BaseHTTPRequestHandler):
             response = 'you just changed the state to ON'
             print(response)
         self.send_response(200)
-        self.send_header("Content-type", "text/html")
+        self.send_header('Content-type', 'text/html')
         self.end_headers()
         if response:
-            self.wfile.write(bytes(response, "utf-8"))
-        else:
-            self.wfile.write(bytes('200', "utf-8"))
+            self.wfile.write(bytes(response, 'utf-8'))
 
 
 myServer = HTTPServer((hostName, hostPort), MyLedLight)
@@ -37,4 +35,4 @@ except KeyboardInterrupt:
     pass
 
 MyLedLight.server_close()
-print(time.asctime(), "Server Stops - %s:%s" % (hostName, hostPort))
+print(time.asctime(), f'Server Stops - {hostName} {hostPort}')

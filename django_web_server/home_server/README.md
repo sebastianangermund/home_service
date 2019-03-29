@@ -1,40 +1,32 @@
-* api endpoints:
+# API Endpoints:
 
------------- ## /things/ledlights/
+## /things/ledlights/
 
-GET
+### GET
 
--
+Returns a list of existing ledlights.
 
-POST
-
-create a new ledlight thing.
+### POST
 
 payload should look like:
+
 {
 	"title": "some_title",
 }
 
------------- ## /things/ledlights/uuid/
+## /things/ledlights/uuid/
 
-GET
+### GET
 
-ping a specific ledlight
+Ping a specific ledlight. Returns 200 if connected properly.
 
-returns:
-´
-status 200
-´
-
--
-
-DELETE
+### DELETE
 
 deletes instance
 
------------- ## /things/ledlights/uuid/state/ 
+## /things/ledlights/uuid/state/ 
 
-PUT
+### PUT
 
 allowed payloads:
 ´
@@ -47,33 +39,34 @@ allowed payloads:
 }
 ´
 
-* arduino endpoints:
+# Arduino Endpoints:
 
------------- ## address/uuid/state/
+## address/uuid/state/
 
-GET
+### GET
 
-returns
+returns (not decided yet)
 
------------- ## address/uuid/0/
+##address/uuid/0/
 
-PUT
+### PUT
 
------------- ## address/uuid/1/
+Turns led light off
 
-PUT
+## address/uuid/1/
+
+### PUT
 
 --------------------------------------------------------------------------------
 
-SPRINT
+# SPRINT
 
 * [ARDUINO]+[THINGS] should be getstate and setstate.
 * [RASP] Start hosting on RaspberryPi
 * [ARDUINO] Add ping to ESP
 * [ARDUINO]+[THINGS] Change endpoint "status" to "update"
-* [ARDUINO] Add ping to ESP
 * [ARDUINO] Fix getState in ESP
-* [THINGS] maybe do something with the returned text from arduinos?
+* [THINGS] maybe do something with the returned response from arduinos?
 * [ARDUINO]+[THINGS] things should update states automatically in some time interval.
 
 * Setup control/analytics service that:
@@ -92,16 +85,17 @@ SPRINT
     * Stores the data in (separate? time series?) database.
     * Has a graphics function (in template? trough api?).
 
-DOING
+## DOING
 
-* [THINGS] Set up a webserver to fake arduino response during testing
-* [THINGS] Each app should have its own service and receiver file
 
-DONE
 
-* [ARDUINO] All ESP’s should be identified with the ID generated when creating its thing.
+## DONE
+
+* [ARDUINO] All ESP-arduino pairs should be identified with the UUID generated when creating its thing.
 * [SERVICE] Return response to things from communication
-* [ARDUINO] Setup authentication in ESP (keep ID secret)
+* [ARDUINO] Setup authentication in ESP (keep UUID secret)
     * Test opening up port on router to allow non local requests
 * [API] Use SessionAuthentication
 * Fix external power supply for ESP
+* [THINGS] Set up a mock webserver to fake arduino response during testing
+* [THINGS] Each app should have its own service and receiver file
