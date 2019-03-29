@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'home_server.things.apps.ThingsConfig',
     'home_server.analytics.apps.AnalyticsConfig',
+    'background_task',
 ]
 
 MIDDLEWARE = [

@@ -1,3 +1,7 @@
+# Development Environment
+
+# Prod. Environment
+
 # API Endpoints:
 
 ## /things/ledlights/
@@ -9,11 +13,11 @@ Returns a list of existing ledlights.
 ### POST
 
 payload should look like:
-
+```python
 {
-	"title": "some_title",
+    "title": "some_title",
 }
-
+```
 ## /things/ledlights/uuid/
 
 ### GET
@@ -29,15 +33,15 @@ deletes instance
 ### PUT
 
 allowed payloads:
-´
+```python
 {
-	"on": "false"
+    "on": "false"
 }
 
 {
-	"on": "true"
+    "on": "true"
 }
-´
+```
 
 # Arduino Endpoints:
 
@@ -47,7 +51,7 @@ allowed payloads:
 
 returns (not decided yet)
 
-##address/uuid/0/
+## address/uuid/0/
 
 ### PUT
 
@@ -56,6 +60,8 @@ Turns led light off
 ## address/uuid/1/
 
 ### PUT
+
+Turns led light on
 
 --------------------------------------------------------------------------------
 
@@ -80,14 +86,14 @@ Turns led light off
 	* Steps for uploading to arduino and ESP should be documented and work!
 	* ESP should loop reconnection to wifi after power outage.
 	* Arduino should continue loop its script after power outage.
-* Setup logging service that:
-    * Periodically gather status data from things.
-    * Stores the data in (separate? time series?) database.
-    * Has a graphics function (in template? trough api?).
 
 ## DOING
 
-
+* Setup logging service that:
+    * Periodically gather status data from things.
+        - set up a background scheduler
+    * Stores the data in (separate? time series?) database.
+    * Has a graphics function (in template? trough api?).
 
 ## DONE
 

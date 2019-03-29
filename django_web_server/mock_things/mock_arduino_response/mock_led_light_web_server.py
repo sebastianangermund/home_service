@@ -26,13 +26,13 @@ class MyLedLightServer(BaseHTTPRequestHandler):
             self.wfile.write(bytes(response, 'utf-8'))
 
 
-myServer = HTTPServer((hostName, hostPort), MyLedLight)
+myServer = HTTPServer((hostName, hostPort), MyLedLightServer)
 print(time.asctime(), f'Server Starts - {hostName} {hostPort}')
 
 try:
-    MyLedLight.serve_forever()
+    myServer.serve_forever()
 except KeyboardInterrupt:
     pass
 
-MyLedLight.server_close()
+myServer.server_close()
 print(time.asctime(), f'Server Stops - {hostName} {hostPort}')

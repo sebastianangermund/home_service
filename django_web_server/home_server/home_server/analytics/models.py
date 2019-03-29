@@ -23,6 +23,6 @@ class LedLightData(models.Model):
         file = os.path.join(BASE_DIR, path)
         df_file = pd.read_csv(file, index=False)
 
-        # print('\n')
-        # print(state)
-        # print('\n')
+        print('\n')
+        print(state)
+        print('\n')
