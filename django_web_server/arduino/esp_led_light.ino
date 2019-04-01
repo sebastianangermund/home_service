@@ -4,32 +4,43 @@
 #include <ESP8266WebServer.h>
 
 //SSID and Password of your wifi router
-const char* ssid = "";
-const char* password = "";
+const char* ssid = FYLL I WIFI-NAMN HÄR: "";
+const char* password = FYLL I WIFI-LÖSEN HÄR: "";
 
 // URL's
-String thing_id = "b909b44d-8772-419b-9b60-f2771c748a32";
-String state_on = "/" + thing_id + "/1/";
-String state_off = "/" + thing_id + "/0/";
-String get_state = "/" + thing_id + "/state/";
+String thing_id = FYLL I UUID HÄR: "";
+
+String ping_me = "/" + thing_id + "/";
+String state_on = "/" + thing_id + "/set-state=1/";
+String state_off = "/" + thing_id + "/set-state=0/";
+String get_state = "/" + thing_id + "/get-state/";
 
 // variables
-const int PIN = 0;
+const int PIN = 0;    //GPIO out on ESP
 int state = 0;
 
-ESP8266WebServer server(80);
+int port_number = FYLL I PORTNUMMER HÄR: ;
+
+
+// ESP COMMANDS
+ESP8266WebServer server(port_number);
+
+void handlePing() {
+  server.send(200, "text/plain", "Hello from Led " + thing_id);
+  return;
+}
 
 void handleStateOn() {
   digitalWrite(PIN, HIGH);
   state = 1;
-  server.send(200, "text/plain", "You've (hopefully) turned on the light!");
+  server.send(200, "text/plain", "you just changed the state to ON");
   return;
 }
 
 void handleStateOff() {
   digitalWrite(PIN, LOW);
   state = 0;
-  server.send(200, "text/plain", "You've (hopefully) turned off the light!");
+  server.send(200, "text/plain", "you just changed the state to OFF");
   return;
 }
 
@@ -69,6 +80,7 @@ void setup() {
 
   server.begin();                  //Start server
   Serial.println("HTTP server started");
+  server.on(ping_me, handlePing);
   server.on(state_on, handleStateOn);
   server.on(state_off, handleStateOff);
   server.on(get_state, handleGetState);
