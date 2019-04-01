@@ -4,14 +4,14 @@
 #include <ESP8266WebServer.h>
 
 //SSID and Password of your wifi router
-const char* ssid = "trell";
-const char* password = "trolleritrollera";
+const char* ssid = "";
+const char* password = "";
 
 // URL's
 String thing_id = "b909b44d-8772-419b-9b60-f2771c748a32";
 String state_on = "/" + thing_id + "/1/";
 String state_off = "/" + thing_id + "/0/";
-String get_state = "/" + thing_id + "/?state/";
+String get_state = "/" + thing_id + "/state/";
 
 // variables
 const int PIN = 0;

@@ -32,7 +32,7 @@ class LedLight(models.Model):
 
     def __str__(self):
         if self.address:
-            return f'http://{self.address}:89/{self.id}'
+            return f'http://{self.address}:80/{self.id}'
         else:
             return f'{self.title} * has no address *'
 
@@ -46,6 +46,7 @@ class LedLight(models.Model):
         return request_get(payload)
 
     def save(self, *args, **kwargs):
+        DEBUG = False
         if self.state == '-':
             super(LedLight, self).save(*args, **kwargs)
         else:

@@ -22,7 +22,7 @@ payload should look like:
 
 ### GET
 
-Ping a specific ledlight. Returns 200 if connected properly.
+See info (state) about a specific ledlight
 
 ### DELETE
 
@@ -74,6 +74,7 @@ Turns led light on
 * [ARDUINO] Fix getState in ESP
 * [THINGS] maybe do something with the returned response from arduinos?
 * [ARDUINO]+[THINGS] things should update states automatically in some time interval.
+* [ARDUINO] Switch port to 89 on ESP.
 
 * Setup control/analytics service that:
     * Bases control on analysis of logging data.
