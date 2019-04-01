@@ -31,16 +31,7 @@ def initialize_csv_file(instance, created, **kwargs):
             'state': [],
         }
         path = f'data_files/ledlights/{instance.pk}.csv'
-
-        print('\n')
-        print(path)
-        print('\n')
-
         file = pd.DataFrame(raw_data, columns=['timestamp', 'state'])
         file.to_csv(path)
         instance.state_data = os.path.join(BASE_DIR, path)
         instance.save()
-    else:
-        print('\n')
-        print('NOT CREATED')
-        print('\n')

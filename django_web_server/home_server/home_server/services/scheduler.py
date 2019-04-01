@@ -1,16 +1,25 @@
-# from datetime import datetime
-# from time import sleep
-from background_task import background
+from redis import Redis
+from rq_scheduler import Scheduler
+from datetime import datetime
 
-from ..analytics.models import LedLightData
 from .service import logging_service
+from ..analytics.models import LedLightData
 
 
-@background()
-def schedule_ledlight_logging():
-    print('scheduler')
-    queryset = LedLightData.objects.all()
+def write_led_light_data():
+    queryset = LedLightData.objects.filter(active=True)
     logging_service(queryset)
 
 
-schedule_ledlight_logging(repeat=10)
+# Get a scheduler for the "foo" queue
+scheduler = Scheduler('led', connection=Redis())
+
+scheduler.schedule(
+    scheduled_time=datetime.utcnow(),
+    func=write_led_light_data,
+    args=None,
+    kwargs=None,
+    interval=5,
+    repeat=None,
+    meta=None,
+)

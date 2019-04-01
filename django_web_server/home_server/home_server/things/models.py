@@ -11,6 +11,8 @@ class LedLight(models.Model):
     """Model representing a led light.
 
     """
+    mock = 'http://127.0.0.1:88'
+
     INACTIVE = '-'
     OFF = '0'
     ON = '1'
@@ -25,6 +27,7 @@ class LedLight(models.Model):
     title = models.CharField(max_length=64, blank=False)
     address = models.CharField(max_length=64, null=True,
                                blank=True, default='')
+    port_number = models.CharField(max_length=2, default='-')
     state = models.CharField(max_length=1, choices=STATE_CHOICES, default='-')
 
     class Meta:
@@ -32,7 +35,7 @@ class LedLight(models.Model):
 
     def __str__(self):
         if self.address:
-            return f'http://{self.address}:80/{self.id}'
+            return f'http://{self.address}:{self.port_number}/{self.id}'
         else:
             return f'{self.title} * has no address *'
 
@@ -40,23 +43,38 @@ class LedLight(models.Model):
         return reverse('led-detail', args=[str(self.id)])
 
     def get_state(self):
-        payload = 'http://127.0.0.1:89/id/state/' if DEBUG \
-            else f'{self}/state/'
+        """Queryd by both analytics and alarms.
 
-        return request_get(payload)
+        """
+        payload = f'{self.mock}/uuid/get-state/' if DEBUG \
+            else f'{self}/get-state/'
+
+        try:
+            response = request_get(payload)
+            if response.status_code == 200:
+                return {
+                    'encoding': response.encoding,
+                    'headers': response.headers,
+                    'content': response.content,
+                }
+            else:
+                return {'status': response.status_code}
+        except:
+            return {'status': 'No response'}
 
     def save(self, *args, **kwargs):
-        DEBUG = False
         if self.state == '-':
             super(LedLight, self).save(*args, **kwargs)
         else:
-            payload = f'http://127.0.0.1:89/id/{self.state}/' if DEBUG \
-                else f'{self}/{self.state}/'
+            payload = f'{self.mock}/uuid/set-state={self.state}/' if DEBUG \
+                else f'{self}/set-state={self.state}/'
             response = request_get(payload)
 
-            print('\n')
-            print(response)
-            print('\n')
+            # print('\n')
+            # print('[*] ENCODING: ', response.encoding)
+            # print('[*] HEADERS: ', response.headers)
+            # print('[*] CONTENT: ', response.content)
+            # print('\n')
 
             if response.status_code == 200:
                 super(LedLight, self).save(*args, **kwargs)

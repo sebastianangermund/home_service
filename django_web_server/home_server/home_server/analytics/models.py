@@ -15,7 +15,12 @@ class LedLightData(models.Model):
     """
     state_data = models.FileField(blank=True,
                                   upload_to='data_files/ledlights/')
-    led_light = models.OneToOneField(LedLight, on_delete=models.CASCADE)
+    led_light = models.OneToOneField(LedLight, on_delete=models.CASCADE,
+                                     related_name='ledlightdata')
+    active = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f'data for Led {self.led_light}'
 
     def write_data_point(self):
         state = self.ledlight.get_state
@@ -24,5 +29,5 @@ class LedLightData(models.Model):
         df_file = pd.read_csv(file, index=False)
 
         print('\n')
-        print(state)
+        print(state)    # write to csv here
         print('\n')
