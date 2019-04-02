@@ -35,9 +35,10 @@ class LedLight(models.Model):
 
     def __str__(self):
         if self.address:
-            return f'http://{self.address}:{self.port_number}/{self.id}'
+            return 'http://{}:{}/{}'.format(
+                self.address, self.port_number, self.id)
         else:
-            return f'{self.title} * has no address *'
+            return '{} * has no address *'.format(self.title)
 
     def get_absolute_url(self):
         return reverse('led-detail', args=[str(self.id)])
@@ -46,8 +47,8 @@ class LedLight(models.Model):
         """Queryd by both analytics and alarms.
 
         """
-        payload = f'{self.mock}/uuid/get-state/' if DEBUG \
-            else f'{self}/get-state/'
+        payload = '{}/uuid/get-state/'.format(self.mock) if DEBUG \
+            else '{}/get-state/'.format(self)
 
         try:
             response = request_get(payload)
@@ -66,8 +67,9 @@ class LedLight(models.Model):
         if self.state == '-':
             super(LedLight, self).save(*args, **kwargs)
         else:
-            payload = f'{self.mock}/uuid/set-state={self.state}/' if DEBUG \
-                else f'{self}/set-state={self.state}/'
+            payload = '{}/uuid/set-state={}/'.format(
+                self.mock, self.state) if DEBUG \
+                else '{}/set-state={}/'.format(self, self.state)
             response = request_get(payload)
 
             # print('\n')
@@ -79,7 +81,7 @@ class LedLight(models.Model):
             if response.status_code == 200:
                 super(LedLight, self).save(*args, **kwargs)
             elif type(response) == int:
-                raise Exception(f'Status code {response} when making '
-                                f'request {payload}')
+                raise Exception('Status code {} when making request {}'.format(
+                    response, payload))
             else:
-                raise Exception(f'{response}')
+                raise Exception('{}'.format(response))

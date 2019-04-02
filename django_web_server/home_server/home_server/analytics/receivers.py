@@ -30,7 +30,7 @@ def initialize_csv_file(instance, created, **kwargs):
             'timestamp': [],
             'state': [],
         }
-        path = f'data_files/ledlights/{instance.pk}.csv'
+        path = 'data_files/ledlights/{}.csv'.format(instance.pk)
         file = pd.DataFrame(raw_data, columns=['timestamp', 'state'])
         file.to_csv(path)
         instance.state_data = os.path.join(BASE_DIR, path)

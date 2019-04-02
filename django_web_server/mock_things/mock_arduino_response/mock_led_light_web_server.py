@@ -31,7 +31,7 @@ class MyLedLightServer(BaseHTTPRequestHandler):
 
 
 myServer = HTTPServer((hostName, hostPort), MyLedLightServer)
-print(time.asctime(), f'Server Starts - {hostName} {hostPort}')
+print(time.asctime(), 'Server Starts - {} {}'.format(hostName, hostPort))
 
 try:
     myServer.serve_forever()
@@ -39,4 +39,4 @@ except KeyboardInterrupt:
     pass
 
 myServer.server_close()
-print(time.asctime(), f'Server Stops - {hostName} {hostPort}')
+print(time.asctime(), 'Server Stops - {} {}'.format(hostName, hostPort))

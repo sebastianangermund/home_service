@@ -20,11 +20,11 @@ class LedLightData(models.Model):
     active = models.BooleanField(default=False)
 
     def __str__(self):
-        return f'data for Led {self.led_light}'
+        return 'data for Led {}'.format(self.led_light)
 
     def write_data_point(self):
         state = self.ledlight.get_state
-        path = f'data_files/ledlights/{self.pk}.csv'
+        path = 'data_files/ledlights/{}.csv'.format(self.pk)
         file = os.path.join(BASE_DIR, path)
         df_file = pd.read_csv(file, index=False)
 

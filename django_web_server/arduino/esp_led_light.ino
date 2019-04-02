@@ -33,14 +33,14 @@ void handlePing() {
 void handleStateOn() {
   digitalWrite(PIN, HIGH);
   state = 1;
-  server.send(200, "text/plain", "you just changed the state to ON");
+  server.send(200, "text/plain", "you've just changed the state to ON");
   return;
 }
 
 void handleStateOff() {
   digitalWrite(PIN, LOW);
   state = 0;
-  server.send(200, "text/plain", "you just changed the state to OFF");
+  server.send(200, "text/plain", "you've just changed the state to OFF");
   return;
 }
 
