@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
 
-from ...scheduler import Scheduler
+from ...service import write_led_light_data
 
 
 class Command(BaseCommand):
@@ -10,5 +10,6 @@ class Command(BaseCommand):
         pass
 
     def handle(self, *args, **options):
-
-        self.stdout.write(self.style.SUCCESS('Successfully started Scheduler'))
+        self.stdout.write('Running service functions...')
+        write_led_light_data()
+        self.stdout.write(self.style.SUCCESS('Service done'))

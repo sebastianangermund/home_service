@@ -1,5 +1,6 @@
 import os
 
+from datetime import datetime
 from django.db import models
 import pandas as pd
 
@@ -23,11 +24,26 @@ class LedLightData(models.Model):
         return 'data for Led {}'.format(self.led_light)
 
     def write_data_point(self):
-        state = self.ledlight.get_state
-        path = 'data_files/ledlights/{}.csv'.format(self.pk)
-        file = os.path.join(BASE_DIR, path)
-        df_file = pd.read_csv(file, index=False)
+        response = self.led_light.get_state()
+        status = response.get('status')
+        if type(status) is int and status == 200:
+            content = response.get('content').decode("utf-8")
+            state = 1 if content == 'ON' else 0
+        elif type(status) is int:
+            #   do something with status codes other than 200
+            state = '-'
+        else:
+            #   do something when no response is given
+            state = '-'
 
-        print('\n')
-        print(state)    # write to csv here
-        print('\n')
+        data = {
+            'timestamp': [int(datetime.utcnow().timestamp())],
+            'state': [state]
+            }
+        new_df_row = pd.DataFrame(data)
+        database_file_path = 'data_files/ledlights/{}.csv'.format(self.pk)
+        database_file = os.path.join(BASE_DIR, database_file_path)
+        with open(database_file, 'a') as csv_file:
+            (new_df_row).to_csv(csv_file, header=False)
+
+        csv_file.close()

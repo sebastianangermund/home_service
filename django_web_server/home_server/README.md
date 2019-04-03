@@ -65,12 +65,13 @@ Turns led light on.
 
 # SPRINT
 
+## TODO
+
 * [RASP] Fix RaspberryPi compability (docker?)
-* [ARDUINO] Add ping to ESP
 * [ARDUINO]+[THINGS] Change endpoint "status" to "update"
 * [ARDUINO] Fix getState in ESP
 * [THINGS] maybe do something with the returned response from arduinos?
-* [ARDUINO]+[THINGS] things should update states automatically in some time interval using manage.py runscheduler.
+* [THINGS] Handle other cases than 200 in analytics.models.write_data_point
 * [ARDUINO]+[THINGS] LedLight.get_state() : 
     - response message from ESP8266WebServer must be extracted (use print in save method)
     - ESP8266WebServer has status code messages. extract this and raise if not 200.
@@ -99,7 +100,7 @@ Turns led light on.
     - Debian? Ubuntu?
     - Set up a cron job that can run manage commands periodically
 
-* [ARDUINO]+[THINGS] analytic things should update states automatically in some time interval (if status is active)
+* [THINGS] analytic things should update states automatically in some time interval (if status is active)
     - create manage command for scheduler tasks and run via cron jobs
 
 ## DONE
@@ -115,3 +116,4 @@ Turns led light on.
 * [THINGS] Each app should have its own service and receiver file
 * [THINGS] A data file should be added to analytics automatically when a led is created
     - Add a field that is automatically put to "active" when LedLigh changes from state "-" to either "on" or "off"
+* [ARDUINO] Add ping to ESP

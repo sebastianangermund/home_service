@@ -6,7 +6,7 @@ hostPort = 88
 
 
 class MyLedLightServer(BaseHTTPRequestHandler):
-    mock_state = '-'
+    mock_state = 'OFF'
     get_led_state = '/uuid/get-state/'
     set_led_off = '/uuid/set-state=0/'
     set_led_on = '/uuid/set-state=1/'

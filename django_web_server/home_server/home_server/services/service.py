@@ -1,4 +1,7 @@
+from ..analytics.models import LedLightData
 
-def logging_service(queryset):
+
+def write_led_light_data():
+    queryset = LedLightData.objects.filter(active=True)
     for thing in queryset:
-        thing.write_data_point
+        thing.write_data_point()

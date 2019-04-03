@@ -52,14 +52,12 @@ class LedLight(models.Model):
 
         try:
             response = request_get(payload)
-            if response.status_code == 200:
-                return {
-                    'encoding': response.encoding,
-                    'headers': response.headers,
-                    'content': response.content,
-                }
-            else:
-                return {'status': response.status_code}
+            return {
+                'status': response.status_code,
+                'encoding': response.encoding,
+                'headers': response.headers,
+                'content': response.content,
+            }
         except:
             return {'status': 'No response'}
 
