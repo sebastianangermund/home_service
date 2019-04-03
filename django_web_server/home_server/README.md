@@ -45,29 +45,27 @@ allowed payloads:
 
 # Arduino Endpoints:
 
-## address/uuid/state/
+## /uuid/
 
-### GET
+Returns greeting and uuid in text/html format.
 
-returns (not decided yet)
+## /uuid/get-state/
 
-## address/uuid/0/
+returns "ON" or "OFF" in text/html format.
 
-### PUT
+## /uuid/set-state=0/
 
-Turns led light off
+Turns led light off.
 
-## address/uuid/1/
+## /uuid/set-state=1/
 
-### PUT
-
-Turns led light on
+Turns led light on.
 
 --------------------------------------------------------------------------------
 
 # SPRINT
 
-* [RASP] Start hosting on RaspberryPi
+* [RASP] Fix RaspberryPi compability (docker?)
 * [ARDUINO] Add ping to ESP
 * [ARDUINO]+[THINGS] Change endpoint "status" to "update"
 * [ARDUINO] Fix getState in ESP
@@ -77,7 +75,7 @@ Turns led light on
     - response message from ESP8266WebServer must be extracted (use print in save method)
     - ESP8266WebServer has status code messages. extract this and raise if not 200.
     - catch exception that is reised when no response is given.
- 
+
 * Setup control/analytics service that:
     * Bases control on analysis of logging data.
     * Has an interface which let you choose when and how to analyse/control data.
@@ -97,9 +95,12 @@ Turns led light on
 
 ## DOING
 
+* [ENV] Put project in docker container
+    - Debian? Ubuntu?
+    - Set up a cron job that can run manage commands periodically
 
 * [ARDUINO]+[THINGS] analytic things should update states automatically in some time interval (if status is active)
-    - run scheduler on runserver
+    - create manage command for scheduler tasks and run via cron jobs
 
 ## DONE
 

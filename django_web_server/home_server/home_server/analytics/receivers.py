@@ -26,12 +26,12 @@ def submission_delete(sender, instance, **kwargs):
 @receiver(post_save, sender=LedLightData)
 def initialize_csv_file(instance, created, **kwargs):
     if created:
-        raw_data = {
+        data_fields = {
             'timestamp': [],
             'state': [],
         }
         path = 'data_files/ledlights/{}.csv'.format(instance.pk)
-        file = pd.DataFrame(raw_data, columns=['timestamp', 'state'])
+        file = pd.DataFrame(data_fields, columns=['timestamp', 'state'])
         file.to_csv(path)
         instance.state_data = os.path.join(BASE_DIR, path)
         instance.save()

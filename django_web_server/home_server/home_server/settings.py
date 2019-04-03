@@ -31,18 +31,26 @@ CSRF_USE_SESSIONS = True
 
 # Application definition
 
-INSTALLED_APPS = [
+DJANGO_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+]
+
+THIRD_PARTY_APPS = [
     'rest_framework',
+]
+
+LOCAL_APPS = [
     'home_server.things.apps.ThingsConfig',
     'home_server.analytics.apps.AnalyticsConfig',
     'home_server.services.apps.ServicesConfig',
 ]
+
+INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -85,7 +93,7 @@ DATABASES = {
         'USER': 'sebbe',
         'PASSWORD': '123Hejsan',
         'HOST': 'localhost',
-        'PORT': '5432',
+        'PORT': 5432,
     }
 }
 
@@ -113,7 +121,6 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
     )
 }
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/

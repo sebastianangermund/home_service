@@ -19,7 +19,7 @@ class MyLedLightServer(BaseHTTPRequestHandler):
         elif self.set_led_on in self.path:
             response = 'you\'ve just changed the state to ON'
         else:
-            self.send_response(400)
+            self.send_response(418)
             self.send_header('Content-type', 'text/html')
             self.end_headers()
             self.wfile.write(bytes('I\'m a teapot', 'utf-8'))
