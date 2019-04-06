@@ -6,6 +6,8 @@ from django.urls import reverse
 from .service import request_get
 from ..settings import DEBUG
 
+DEBUG = False
+
 
 class LedLight(models.Model):
     """Model representing a led light.

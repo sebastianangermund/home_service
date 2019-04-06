@@ -20,9 +20,10 @@ def initialize_analytics_instance(instance, created, **kwargs):
         analytics_object = LedLightData(led_light=instance)
         analytics_object.save()
 
-    if instance.state != '-':
-        instance.ledlightdata.active = True
-        instance.ledlightdata.save()
     if instance.state == '-':
         instance.ledlightdata.active = False
+        instance.ledlightdata.save()
+    else:
+        instance.ledlightdata.active = True
+        instance.ledlightdata.write_data_point()
         instance.ledlightdata.save()
