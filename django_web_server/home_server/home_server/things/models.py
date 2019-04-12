@@ -6,14 +6,12 @@ from django.urls import reverse
 from .service import request_get
 from ..settings import DEBUG
 
-DEBUG = False
-
 
 class LedLight(models.Model):
     """Model representing a led light.
 
     """
-    mock = 'http://127.0.0.1:88'
+    mock = 'http://mock-service:9753'
 
     INACTIVE = '-'
     OFF = '0'
@@ -70,13 +68,10 @@ class LedLight(models.Model):
             payload = '{}/uuid/set-state={}/'.format(
                 self.mock, self.state) if DEBUG \
                 else '{}/set-state={}/'.format(self, self.state)
+            print('\n')
+            print('[*payload*]: ', payload)
+            print('\n')
             response = request_get(payload)
-
-            # print('\n')
-            # print('[*] ENCODING: ', response.encoding)
-            # print('[*] HEADERS: ', response.headers)
-            # print('[*] CONTENT: ', response.content)
-            # print('\n')
 
             if response.status_code == 200:
                 super(LedLight, self).save(*args, **kwargs)

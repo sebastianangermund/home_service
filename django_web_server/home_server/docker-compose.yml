@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  debian-service:
+    image: debian:latest
+    tty: true
+    stdin_open: true
+    ports:
+      - "8090:8090"
+  db:
+    image: postgres
+  mock-service:
+    image: mock_led_light_web_server
+    build: ../mock_things/
+    ports:
+      - "9753:9753"
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db

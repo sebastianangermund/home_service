@@ -1,8 +1,8 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import time
 
-hostName = '127.0.0.1'
-hostPort = 88
+hostName = '0.0.0.0'
+hostPort = 9753
 
 
 class MyLedLightServer(BaseHTTPRequestHandler):
@@ -15,14 +15,17 @@ class MyLedLightServer(BaseHTTPRequestHandler):
         if self.get_led_state in self.path:
             response = self.mock_state
         elif self.set_led_off in self.path:
+            self.mock_state = 'OFF'
             response = 'you\'ve just changed the state to OFF'
         elif self.set_led_on in self.path:
+            self.mock_state = 'ON'
             response = 'you\'ve just changed the state to ON'
         else:
             self.send_response(418)
             self.send_header('Content-type', 'text/html')
             self.end_headers()
             self.wfile.write(bytes('I\'m a teapot', 'utf-8'))
+            return
 
         self.send_response(200)
         self.send_header('Content-type', 'text/html')

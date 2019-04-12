@@ -42,3 +42,8 @@ class LedLightState(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (IsAdminUser,)
     queryset = LedLight.objects.all()
     serializer_class = LedLightStateSerializer
+
+
+class ManagementCommands(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = (IsAdminUser,)
+    serializer_class = LedLightStateSerializer

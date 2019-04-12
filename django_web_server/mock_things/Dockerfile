@@ -5,5 +5,4 @@ WORKDIR /code
 COPY requirements.txt /code/
 RUN pip install -r requirements.txt
 COPY . /code/
-CMD ./manage.py makemigrations; \
-	./manage.py migrate; \
+CMD python ./mock_arduino_response/mock_led_light_web_server.py;

@@ -30,7 +30,7 @@ class LedLightData(models.Model):
             content = response.get('content').decode("utf-8")
             state = 1 if content == 'ON' else 0
         elif type(status) is int:
-            #   do something with status codes other than 200
+            #   do something with status codes other than 200.
             state = '-'
         else:
             #   do something when no response is given

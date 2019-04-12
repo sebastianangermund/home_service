@@ -20,4 +20,9 @@ led_urls = [
          name='led-state'),
 ]
 
-urlpatterns = user_urls + auth_urls + led_urls
+service_urls = [
+    path('service/management-commands/', views.ManagementConnands.as_view(),
+         name='management-commands')
+]
+
+urlpatterns = user_urls + auth_urls + led_urls + service_urls

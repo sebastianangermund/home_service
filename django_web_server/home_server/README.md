@@ -1,8 +1,16 @@
-# Development Environment
+# Development
+
+run with 
+
+```bash
+docker-compose up
+```
 
 ### Mock arduino response
 
-With DEBUG=True you can run the python web server located in the folder one level up with the name "mock_things".
+With DEBUG=True the python web server located in the folder one level up with the name "mock_things" is started with docker-compose automatically. Comment out mock-service from docker-compose.yml if prod.
+
+Note that the mock-address "http://mock-service:9753" in home_server/things/models only work when running from docker-compose. This should be chánged to "http://localhost:9753" when running in env.
 
 ## Setup things
 
@@ -10,17 +18,16 @@ With DEBUG=True you can run the python web server located in the folder one leve
 
 Either in Django admin or trough the API documentet below: Create a things.models.LedLight with any local IP (192.168.x.x) and let the state be "-".
 When you create the LedLight object, an object from analytics.models.LedLightData will be created automatically, with field active=False. Also a csv file will be automatically created as home_server/data_files/ledlights/*id*.csv.
-If you now change the LedLight state (either trough admin or API) to either "on" or "off", the LedLightData object will automatically change to have field active=True. And if a LedLightData object is active, then its csv file will be automatically populated with (timestamp, state)-rows periodically.
+If you now change the LedLight state (either trough admin or API) to either "on" or "off", the LedLightData object will automatically change to have field active=True. And if a LedLightData object is active, then its csv file will be automatically populated with (timestamp, state)-rows periodically. This periodic writing is done by a cron job in the debian-service image found in the docker-compose file.
 
 ### Using Arduino
 
 Same as above with some exceptions:
 
+* Comment out the mock-service part from docker-compose.yml
 * Create a LedLight object without address. Get the arduino going and give it the uuid generated as the LedLight objects uuid.
 * Make sure to note the arduino local IP and port number. Update the LedLight object with these.
 * Either set DEBUG = False in settings, or overwrite DEBUG as True in things.models.
-
-# Prod. Environment
 
 # API Endpoints:
 
