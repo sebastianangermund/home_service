@@ -14,13 +14,13 @@ python manage.py makemigrations
 python manage.py migrate
 ```
 
-### Mock arduino response
+## Mock arduino response
 
 With DEBUG=True the python web server located in the folder one level up with the name "mock_things" is started with docker-compose automatically.
 
 Note that the mock-address "http://mock-service:9753" in home_server/things/models only work when running from docker-compose. This should be chánged to "http://localhost:9753" when running in env.
 
-### Initiate thing
+## Initiate thing
 
 Either in Django admin or trough the API documentet below: Create a things.models.LedLight with empty IP-field and let the state be "-".
 When you create the LedLight object, an object from analytics.models.LedLightData will be created automatically, with field active=False. Also a csv file will be automatically created as home_server/data_files/ledlights/*id*.csv.
@@ -37,9 +37,9 @@ If the mock-service doesn't work, the next step wont work.
 
 If the mock-service is running: Now change the LedLight state (either trough admin or API) to either "on" or "off". The LedLightData object will automatically change to have field active=True.
 
-### Write state-data automatically
+## Write state-data automatically
 
-This should only have to be done once.
+### Do this once:
 
 ssh into the debian-service container and do:
 
@@ -69,9 +69,16 @@ and adding
 
 at the bottom. IMPORTANT to leave a newline at the bottom! This writes datapoints every 10 minutes.
 
-# Prod
 
-### Running with arduinos (prod)
+### Do this after docker-compose up
+
+ssh into the debian-service container and run
+
+```bash
+services service cron start
+```
+
+# Prod
 
 Same as development with some exceptions:
 
