@@ -21,8 +21,7 @@ led_urls = [
 ]
 
 service_urls = [
-    path('service/management-commands/', views.ManagementConnands.as_view(),
-         name='management-commands')
+    path('service/write-data-points/', views.write_data_points)
 ]
 
 urlpatterns = user_urls + auth_urls + led_urls + service_urls

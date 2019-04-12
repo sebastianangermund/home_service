@@ -1,11 +1,14 @@
 from django.contrib.auth.models import User
+from django.http import HttpResponse
 
 from rest_framework.permissions import IsAdminUser
+from rest_framework.decorators import api_view
 from rest_framework import (
     generics,
 )
 
 from ..things.models import LedLight
+from ..services.service import write_led_light_data
 from .serializers import (
     LedLightSerializer,
     UserSerializer,
@@ -44,6 +47,10 @@ class LedLightState(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = LedLightStateSerializer
 
 
-class ManagementCommands(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = (IsAdminUser,)
-    serializer_class = LedLightStateSerializer
+@api_view(['GET'])
+def write_data_points(request, format=None):
+    """List all code snippets, or create a new snippet."""
+    if request.method == 'GET':
+        write_led_light_data()
+        html = "<html><body>Done.</body></html>"
+        return HttpResponse(html)

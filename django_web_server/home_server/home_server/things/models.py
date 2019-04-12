@@ -68,9 +68,7 @@ class LedLight(models.Model):
             payload = '{}/uuid/set-state={}/'.format(
                 self.mock, self.state) if DEBUG \
                 else '{}/set-state={}/'.format(self, self.state)
-            print('\n')
-            print('[*payload*]: ', payload)
-            print('\n')
+
             response = request_get(payload)
 
             if response.status_code == 200:

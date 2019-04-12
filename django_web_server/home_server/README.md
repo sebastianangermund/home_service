@@ -1,33 +1,84 @@
 # Development
 
-run with 
-
+Run with:
 ```bash
 docker-compose up
 ```
 
+ssh into web container and migrate:
+
+```bash
+docker exec <web container name> -it /bin/bash
+cd code
+python manage.py makemigrations
+python manage.py migrate
+```
+
 ### Mock arduino response
 
-With DEBUG=True the python web server located in the folder one level up with the name "mock_things" is started with docker-compose automatically. Comment out mock-service from docker-compose.yml if prod.
+With DEBUG=True the python web server located in the folder one level up with the name "mock_things" is started with docker-compose automatically.
 
 Note that the mock-address "http://mock-service:9753" in home_server/things/models only work when running from docker-compose. This should be chánged to "http://localhost:9753" when running in env.
 
-## Setup things
+### Initiate thing
 
-### Using Mock webserver
-
-Either in Django admin or trough the API documentet below: Create a things.models.LedLight with any local IP (192.168.x.x) and let the state be "-".
+Either in Django admin or trough the API documentet below: Create a things.models.LedLight with empty IP-field and let the state be "-".
 When you create the LedLight object, an object from analytics.models.LedLightData will be created automatically, with field active=False. Also a csv file will be automatically created as home_server/data_files/ledlights/*id*.csv.
-If you now change the LedLight state (either trough admin or API) to either "on" or "off", the LedLightData object will automatically change to have field active=True. And if a LedLightData object is active, then its csv file will be automatically populated with (timestamp, state)-rows periodically. This periodic writing is done by a cron job in the debian-service image found in the docker-compose file.
 
-### Using Arduino
+Make sure the mock-service is running by ssh into the web container and curl a response:
+```bash
+docker exec <web container name> -it /bin/bash
 
-Same as above with some exceptions:
+curl http://mock-service:9753/uuid/get-state/
+```
+You should get a 200 response.
+
+If the mock-service doesn't work, the next step wont work.
+
+If the mock-service is running: Now change the LedLight state (either trough admin or API) to either "on" or "off". The LedLightData object will automatically change to have field active=True.
+
+### Write state-data automatically
+
+This should only have to be done once.
+
+ssh into the debian-service container and do:
+
+```bash
+apt-get update
+apt-get install curl
+apt-get install cron
+mkdir bash_services
+touch bash_services/write_data_points.sh
+chmod +x bash_services/write_data_points.sh
+echo "curl http://web:8000/service/write-data-points/" > bash_services/write_data_points.sh
+cd etc
+```
+
+Now when in the etc dir, add a new cronjob by opening
+
+```bash
+crontab -e
+```
+
+and adding
+
+```
+*/10 * * * * /bash_scripts/write_data_points.sh
+
+```
+
+at the bottom. IMPORTANT to leave a newline at the bottom! This writes datapoints every 10 minutes.
+
+# Prod
+
+### Running with arduinos (prod)
+
+Same as development with some exceptions:
 
 * Comment out the mock-service part from docker-compose.yml
 * Create a LedLight object without address. Get the arduino going and give it the uuid generated as the LedLight objects uuid.
 * Make sure to note the arduino local IP and port number. Update the LedLight object with these.
-* Either set DEBUG = False in settings, or overwrite DEBUG as True in things.models.
+* Either set DEBUG = False in settings, or set DEBUG as False in things.models.
 
 # API Endpoints:
 
@@ -70,6 +121,12 @@ allowed payloads:
 }
 ```
 
+## /service/write-data-points/
+
+### GET
+
+Triggers function to write data points for LedLightData objects
+
 # Arduino Endpoints:
 
 ## /uuid/
@@ -94,8 +151,6 @@ Turns led light on.
 
 ## TODO
 
-* [RASP] Fix RaspberryPi compability (docker?)
-* [ARDUINO]+[THINGS] Change endpoint "status" to "update"
 * [ARDUINO] Fix getState in ESP
 * [THINGS] maybe do something with the returned response from arduinos?
 * [THINGS] Handle other cases than 200 in analytics.models.write_data_point
@@ -123,12 +178,6 @@ Turns led light on.
 
 ## DOING
 
-* [ENV] Put project in docker container
-    - Debian? Ubuntu?
-    - Set up a cron job that can run manage commands periodically
-
-* [THINGS] analytic things should update states automatically in some time interval (if status is active)
-    - create manage command for scheduler tasks and run via cron jobs
 
 ## DONE
 
@@ -144,3 +193,9 @@ Turns led light on.
 * [THINGS] A data file should be added to analytics automatically when a led is created
     - Add a field that is automatically put to "active" when LedLigh changes from state "-" to either "on" or "off"
 * [ARDUINO] Add ping to ESP
+* [ENV] Put project in docker container
+    - Debian? Ubuntu?
+    - Set up a cron job that can run manage commands periodically
+
+* [THINGS] analytic things should update states automatically in some time interval (if status is active)
+    - create manage command for scheduler tasks and run via cron jobs

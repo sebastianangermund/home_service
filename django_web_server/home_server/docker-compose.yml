@@ -9,6 +9,9 @@ services:
       - "8090:8090"
   db:
     image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: 123Hejsan
   mock-service:
     image: mock_led_light_web_server
     build: ../mock_things/
