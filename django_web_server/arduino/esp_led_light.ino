@@ -4,11 +4,11 @@
 #include <ESP8266WebServer.h>
 
 //SSID and Password of your wifi router
-const char* ssid = FYLL I WIFI-NAMN HÄR: "";
-const char* password = FYLL I WIFI-LÖSEN HÄR: "";
+const char* ssid = "Zerebra-Guest";
+const char* password = "solenskiner123";
 
 // URL's
-String thing_id = FYLL I UUID HÄR: "";
+String thing_id = "05d8137ec2194125b73cdc00d7fd8c70";
 
 String ping_me = "/" + thing_id + "/";
 String state_on = "/" + thing_id + "/set-state=1/";
@@ -47,12 +47,12 @@ void handleStateOff() {
 void handleGetState() {
   if (state == 1) {
     digitalWrite(PIN, HIGH);
-    server.send(200, "ON");
+    server.send(200, "text/plain", "ON");
     return;
   }
   if (state == 0) {
     digitalWrite(PIN, LOW);
-    server.send(200, "OFF");
+    server.send(200, "text/plain", "OFF");
     return;
   }
 }

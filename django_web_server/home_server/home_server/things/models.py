@@ -6,6 +6,7 @@ from django.urls import reverse
 from .service import request_get
 from ..settings import DEBUG
 
+DEBUG = False
 
 class LedLight(models.Model):
     """Model representing a led light.
@@ -35,8 +36,9 @@ class LedLight(models.Model):
 
     def __str__(self):
         if self.address:
+            idd = ''.join(str(self.id).split('-'))
             return 'http://{}:{}/{}'.format(
-                self.address, self.port_number, self.id)
+                self.address, self.port_number, idd)
         else:
             return '{} * has no address *'.format(self.title)
 
@@ -65,6 +67,11 @@ class LedLight(models.Model):
         if self.state == '-':
             super(LedLight, self).save(*args, **kwargs)
         else:
+            print('\n')
+            print(DEBUG)
+            print('\n')
+            print(self)
+            print('\n')
             payload = '{}/uuid/set-state={}/'.format(
                 self.mock, self.state) if DEBUG \
                 else '{}/set-state={}/'.format(self, self.state)

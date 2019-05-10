@@ -43,7 +43,9 @@ class LedLightData(models.Model):
         new_df_row = pd.DataFrame(data)
         database_file_path = 'data_files/ledlights/{}.csv'.format(self.pk)
         database_file = os.path.join(BASE_DIR, database_file_path)
-        new_df_row.to_csv(database_file, mode='a', header=False)
+        df = pd.read_csv(database_file)
+        df.append(new_df_row, ignore_index=True)
+        df.to_csv(database_file, index=False)
         # with open(database_file, 'a') as csv_file:
         #     (new_df_row).to_csv(csv_file, header=False)
         # csv_file.close()

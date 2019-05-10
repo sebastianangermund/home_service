@@ -1,5 +1,7 @@
 # Development
 
+ssh into posgres container and access the database by writing "su postgres", then psql.
+
 Run with:
 ```bash
 docker-compose up
