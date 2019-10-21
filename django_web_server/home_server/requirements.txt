@@ -2,7 +2,7 @@ certifi==2019.3.9
 chardet==3.0.4
 Click==7.0
 croniter==0.3.29
-Django==2.1.7
+Django==2.1.11
 django-compat==1.0.15
 django-model-utils==3.1.2
 djangorestframework==3.9.2
