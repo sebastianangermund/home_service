@@ -6,19 +6,32 @@ hostPort = 9753
 
 
 class MyLedLightServer(BaseHTTPRequestHandler):
-    mock_state = 'OFF'
+
     get_led_state = '/uuid/get-state/'
     set_led_off = '/uuid/set-state=0/'
     set_led_on = '/uuid/set-state=1/'
 
     def do_GET(self):
         if self.get_led_state in self.path:
-            response = self.mock_state
+            led_state = 'OFF'
+            try:
+                f = open('led_state', 'r')
+                led_state = f.read().strip()
+                f.close()
+            except:
+                f = open('led_state', 'w+')
+                f.write(led_state)
+                f.close()
+            response = led_state
         elif self.set_led_off in self.path:
-            self.mock_state = 'OFF'
+            f = open('led_state', 'w+')
+            f.write('OFF')
+            f.close()
             response = 'you\'ve just changed the state to OFF'
         elif self.set_led_on in self.path:
-            self.mock_state = 'ON'
+            f = open('led_state', 'w+')
+            f.write('ON')
+            f.close()            
             response = 'you\'ve just changed the state to ON'
         else:
             self.send_response(418)
