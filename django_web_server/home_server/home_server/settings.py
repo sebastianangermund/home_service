@@ -25,7 +25,7 @@ SECRET_KEY = 'kg!wm631erif3lkz8_@vzsjzc6l4abb8a(w=6d*u3*_dd1n%vt'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['.example.com', 'example.com', '192.168.1.11', '192.168.1.2', '192.168.1.7', 'localhost']
 
 CSRF_USE_SESSIONS = True
 
@@ -87,22 +87,22 @@ WSGI_APPLICATION = 'home_server.wsgi.application'
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
 DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.postgresql_psycopg2',
-    #     'NAME': 'home_server',
-    #     'USER': 'sebbe',
-    #     'PASSWORD': '123Hejsan',
-    #     'HOST': 'localhost',
-    #     'PORT': 5432,
-    # },
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',
-        'USER': 'postgres',
-	'PASSWORD': '123Hejsan',
-        'HOST': 'db',
-        'PORT': 5432,
-    }
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'home_service',
+        'USER': 'agge',
+        'PASSWORD': '123Hejsan',
+        'HOST': 'localhost',
+        'PORT': '',
+    },
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.postgresql',
+    #     'NAME': 'postgres',
+    #     'USER': 'postgres',
+	# 'PASSWORD': '123Hejsan',
+    #     'HOST': 'db',
+    #     'PORT': 5432,
+    # }
 }
 
 
@@ -148,3 +148,4 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')

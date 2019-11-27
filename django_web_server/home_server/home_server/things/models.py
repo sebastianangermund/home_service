@@ -6,13 +6,13 @@ from django.urls import reverse
 from .service import request_get
 from ..settings import DEBUG
 
-DEBUG = False
+DEBUG = True
 
 class LedLight(models.Model):
     """Model representing a led light.
 
     """
-    mock = 'http://mock-service:9753'
+    mock = 'http://192.168.1.11:9753'
 
     INACTIVE = '-'
     OFF = '0'
@@ -37,10 +37,9 @@ class LedLight(models.Model):
     def __str__(self):
         if self.address:
             idd = ''.join(str(self.id).split('-'))
-            return 'http://{}:{}/{}'.format(
-                self.address, self.port_number, idd)
+            return f'http://{self.address}:{self.port_number}/{idd}'
         else:
-            return '{} * has no address *'.format(self.title)
+            return f'{self.title} * has no address *'
 
     def get_absolute_url(self):
         return reverse('led-detail', args=[str(self.id)])
@@ -49,8 +48,8 @@ class LedLight(models.Model):
         """Queryd by both analytics and alarms.
 
         """
-        payload = '{}/uuid/get-state/'.format(self.mock) if DEBUG \
-            else '{}/get-state/'.format(self)
+        payload = f'{self.mock}/uuid/get-state/' if DEBUG \
+            else f'{self}/get-state/'
 
         try:
             response = request_get(payload)
@@ -72,16 +71,14 @@ class LedLight(models.Model):
             print('\n')
             print(self)
             print('\n')
-            payload = '{}/uuid/set-state={}/'.format(
-                self.mock, self.state) if DEBUG \
-                else '{}/set-state={}/'.format(self, self.state)
+            payload = f'{self.mock}/uuid/set-state={self.state}/' if DEBUG \
+                else f'{self}/set-state={self.state}/'
 
             response = request_get(payload)
 
             if response.status_code == 200:
                 super(LedLight, self).save(*args, **kwargs)
             elif type(response) == int:
-                raise Exception('Status code {} when making request {}'.format(
-                    response, payload))
+                raise Exception(f'Status code {response} when making request {payload}')
             else:
-                raise Exception('{}'.format(response))
+                raise Exception(f'{response}')

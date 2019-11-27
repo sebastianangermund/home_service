@@ -2,7 +2,6 @@ import os
 
 from django.dispatch import receiver
 from django.db.models.signals import post_delete, post_save
-import pandas as pd
 
 from .models import LedLightData
 
@@ -26,12 +25,9 @@ def submission_delete(sender, instance, **kwargs):
 @receiver(post_save, sender=LedLightData)
 def initialize_csv_file(instance, created, **kwargs):
     if created:
-        data_fields = {
-            'timestamp': [],
-            'state': [],
-        }
-        path = 'data_files/ledlights/{}.csv'.format(instance.pk)
-        file = pd.DataFrame(data_fields, columns=['timestamp', 'state'])
-        file.to_csv(path)
-        instance.state_data = os.path.join(BASE_DIR, path)
-        instance.save()
+        data = f'timestamp: -, state: -'
+        database_file_path = f'data_files/ledlights/{instance.pk}.csv'
+        database_file = os.path.join(BASE_DIR, database_file_path)
+        f = open(database_file, 'w+')
+        f.write(data)
+        f.close()

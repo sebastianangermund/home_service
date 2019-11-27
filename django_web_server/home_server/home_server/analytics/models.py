@@ -2,7 +2,6 @@ import os
 
 from datetime import datetime
 from django.db import models
-import pandas as pd
 
 from ..things.models import LedLight
 
@@ -36,15 +35,10 @@ class LedLightData(models.Model):
             #   do something when no response is given
             state = '-'
 
-        data = {
-            'timestamp': [int(datetime.utcnow().timestamp())],
-            'state': [state]
-            }
-        new_df_row = pd.DataFrame(data)
+        data = f'timestamp: {int(datetime.utcnow().timestamp())}, state: {state}'
         database_file_path = 'data_files/ledlights/{}.csv'.format(self.pk)
         database_file = os.path.join(BASE_DIR, database_file_path)
-        new_df_row.to_csv(database_file, mode='a', header=False)
-        # with open(database_file, 'a') as csv_file:
-        #     (new_df_row).to_csv(csv_file, header=False)
-        # csv_file.close()
+        f = open(database_file, 'w+')
+        f.write(data)
+        f.close()
 
