@@ -4,9 +4,8 @@ from django.db import models
 from django.urls import reverse
 
 from .service import request_get
-from ..settings import DEBUG
 
-DEBUG = True
+DEBUG = False
 
 class LedLight(models.Model):
     """Model representing a led light.
@@ -28,7 +27,7 @@ class LedLight(models.Model):
     title = models.CharField(max_length=64, blank=False)
     address = models.CharField(max_length=64, null=True,
                                blank=True, default='')
-    port_number = models.CharField(max_length=2, default='-')
+    port_number = models.CharField(max_length=4, default='-')
     state = models.CharField(max_length=1, choices=STATE_CHOICES, default='-')
 
     class Meta:
@@ -36,8 +35,7 @@ class LedLight(models.Model):
 
     def __str__(self):
         if self.address:
-            idd = ''.join(str(self.id).split('-'))
-            return f'http://{self.address}:{self.port_number}/{idd}'
+            return f'http://{self.address}:{self.port_number}/{self.id}'
         else:
             return f'{self.title} * has no address *'
 

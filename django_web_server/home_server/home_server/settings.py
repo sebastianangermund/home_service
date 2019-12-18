@@ -23,11 +23,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'kg!wm631erif3lkz8_@vzsjzc6l4abb8a(w=6d*u3*_dd1n%vt'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['.example.com', 'example.com', '192.168.1.11', '192.168.1.2', '192.168.1.7', 'localhost']
+ALLOWED_HOSTS = ['.pt-sandra.se', 'pt-sandra.se', '192.168.1.1', '192.168.1.11', '192.168.1.2', '192.168.1.7', 'localhost', '62.63.213.62']
 
-CSRF_USE_SESSIONS = True
+# CSRF_USE_SESSIONS = True
 
 # Application definition
 
