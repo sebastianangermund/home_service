@@ -16,10 +16,12 @@ class LedLight(models.Model):
     INACTIVE = '-'
     OFF = '0'
     ON = '1'
+    BLINK = '2'
     STATE_CHOICES = (
         (INACTIVE, 'inactive'),
-        (OFF, 'off'),
-        (ON, 'on')
+        (OFF, 'Off'),
+        (ON, 'On'),
+        (BLINK, 'blink')
     )
     id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     owner = models.ForeignKey('auth.User', related_name='ledlight',
@@ -64,11 +66,6 @@ class LedLight(models.Model):
         if self.state == '-':
             super(LedLight, self).save(*args, **kwargs)
         else:
-            print('\n')
-            print(DEBUG)
-            print('\n')
-            print(self)
-            print('\n')
             payload = f'{self.mock}/uuid/set-state={self.state}/' if DEBUG \
                 else f'{self}/set-state={self.state}/'
 
@@ -77,6 +74,8 @@ class LedLight(models.Model):
             if response.status_code == 200:
                 super(LedLight, self).save(*args, **kwargs)
             elif type(response) == int:
-                raise Exception(f'Status code {response} when making request {payload}')
+                raise Exception(
+                    f'Status code {response} when making request {payload}'
+                )
             else:
                 raise Exception(f'{response}')
