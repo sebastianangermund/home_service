@@ -70,7 +70,7 @@ class LedLight(models.Model):
 
             response = request_get(url, "")
 
-            if response.status_code == 200:
+            if response["status"] == 200:
                 super(LedLight, self).save(*args, **kwargs)
             elif type(response) == int:
                 raise Exception(

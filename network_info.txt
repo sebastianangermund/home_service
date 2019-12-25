@@ -1,0 +1,11 @@
+For access on port 80, enabling LAN access and access through external IP:
+- comment out the 443 block in nginx/sites-available
+- enable port 80 forwarding in router
+
+For access through web browser:
+- re-enable 443 block in nginx/sites-available
+- enable port 443 forwarding in router
+
+when debugging: 
+- make sure gunicorn.socket is running and serving /run/gunicorn.sock
+- make sure gunicorn.service serves the web root, and there is no errors in journalctl -u gunicorn.service
