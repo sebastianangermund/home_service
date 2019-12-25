@@ -4,6 +4,7 @@ from django.db import models
 from django.urls import reverse
 
 from .service import request_get
+from .lightbulb import LightBulb, LightBulbSettings, LightBulbRelay
 
 DEBUG = False
 
@@ -45,14 +46,12 @@ class LedLight(models.Model):
         return reverse('led-detail', args=[str(self.id)])
 
     def get_state(self):
-        """Queryd by both analytics and alarms.
-
-        """
-        payload = f'{self.mock}/uuid/get-state/' if DEBUG \
+        """Queryd by both analytics and alarms."""
+        url = f'{self.mock}/uuid/get-state/' if DEBUG \
             else f'{self}/get-state/'
 
         try:
-            response = request_get(payload)
+            response = request_get(url, "")
             return {
                 'status': response.status_code,
                 'encoding': response.encoding,
@@ -66,16 +65,16 @@ class LedLight(models.Model):
         if self.state == '-':
             super(LedLight, self).save(*args, **kwargs)
         else:
-            payload = f'{self.mock}/uuid/set-state={self.state}/' if DEBUG \
+            url = f'{self.mock}/uuid/set-state={self.state}/' if DEBUG \
                 else f'{self}/set-state={self.state}/'
 
-            response = request_get(payload)
+            response = request_get(url, "")
 
             if response.status_code == 200:
                 super(LedLight, self).save(*args, **kwargs)
             elif type(response) == int:
                 raise Exception(
-                    f'Status code {response} when making request {payload}'
+                    f'Status code {response} when making request {url}'
                 )
             else:
                 raise Exception(f'{response}')
