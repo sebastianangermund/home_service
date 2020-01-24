@@ -1,9 +1,11 @@
 import uuid
 
+from datetime import datetime
 from django.db import models
 from django.urls import reverse
+from django.core.files import File
 
-from .services import request_get
+from .services import request_get, take_picture
 
 
 class Camera(models.Model):
@@ -36,6 +38,7 @@ class Photo(models.Model):
                               null=True)
     owner = models.ForeignKey('auth.User', related_name='my_photos',
                               on_delete=models.CASCADE)
+    take_new = models.BooleanField(default=False)
 
     class Meta:
         ordering = ['uploaded', 'camera']
@@ -44,4 +47,10 @@ class Photo(models.Model):
         return f'{self.camera} ({self.uploaded})'
 
     def save(self, *args, **kwargs):
-        super(Photo, self).save(*args, **kwargs)
+        if not self.take_new:
+            super(Photo, self).save(*args, **kwargs)
+            return
+        address = self.camera.address
+        photo_path = take_picture(address)
+        photo_name = f'{int(datetime.utcnow().timestamp())}.jpg'
+        self.photo.save(photo_name, File(open(photo_path, 'rb')))

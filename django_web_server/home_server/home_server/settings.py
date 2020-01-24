@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'kg!wm631erif3lkz8_@vzsjzc6l4abb8a(w=6d*u3*_dd1n%vt'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['.pt-sandra.se', 'pt-sandra.se','localhost', '62.63.213.62']
 
@@ -88,18 +88,18 @@ WSGI_APPLICATION = 'home_server.wsgi.application'
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'home_service',
-        'USER': 'agge',
-        'PASSWORD': '123Hejsan',
-        'HOST': 'localhost',
-        'PORT': '',
-    },
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#     }
+#    'default': {
+#        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#        'NAME': 'home_service',
+#        'USER': 'agge',
+#        'PASSWORD': '123Hejsan',
+#        'HOST': 'localhost',
+#        'PORT': '',
+#    },
+     'default': {
+         'ENGINE': 'django.db.backends.sqlite3',
+         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+     },
 }
 
 

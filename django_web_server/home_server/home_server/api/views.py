@@ -49,7 +49,6 @@ class LedLightState(generics.RetrieveUpdateDestroyAPIView):
 
 @api_view(['GET'])
 def write_data_points(request, format=None):
-    """List all code snippets, or create a new snippet."""
     if request.method == 'GET':
         write_led_light_data()
         html = "<html><body>Done.</body></html>"
@@ -58,11 +57,12 @@ def write_data_points(request, format=None):
 
 class PhotoViewSet(viewsets.ModelViewSet):
     """Generic view for API methods. Handles POST and GET automatically"""
+    permission_classes = (
+        # permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly
+        permissions.IsAdminUser,
+    )
     queryset = Photo.objects.all()
     serializer_class = PhotoSerializer
-    permission_classes = (
-        permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly
-    )
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
@@ -72,6 +72,7 @@ class PhotoViewSet(viewsets.ModelViewSet):
         methods=['PUT'],
         serializer_class=PhotoFieldSerializer,
         parser_classes=[parsers.MultiPartParser],
+        permission_classes=[permissions.IsAdminUser],
     )
     def photo(self, request, pk):
         """Handles API PUT request for the "photo" instance to model "Photo"."""
