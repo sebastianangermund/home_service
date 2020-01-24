@@ -1,18 +1,18 @@
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 
-from rest_framework.permissions import IsAdminUser
 from rest_framework.decorators import api_view
 from rest_framework import (
-    generics,
+    generics, viewsets, permissions, parsers, decorators, response,
 )
 
-from ..things.models import LedLight
+from ..lights.models import LedLight
+from ..cameras.models import Camera, Photo
 from ..services.service import write_led_light_data
+from .permissions import IsOwnerOrReadOnly
 from .serializers import (
-    LedLightSerializer,
-    UserSerializer,
-    LedLightStateSerializer,
+    LedLightSerializer, UserSerializer, LedLightStateSerializer,
+    PhotoSerializer, PhotoFieldSerializer,
 )
 
 
@@ -27,7 +27,7 @@ class UserDetail(generics.RetrieveAPIView):
 
 
 class LedLightList(generics.ListCreateAPIView):
-    permission_classes = (IsAdminUser,)
+    permission_classes = (permissions.IsAdminUser,)
     queryset = LedLight.objects.all()
     serializer_class = LedLightSerializer
 
@@ -36,13 +36,13 @@ class LedLightList(generics.ListCreateAPIView):
 
 
 class LedLightDetail(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = (IsAdminUser,)
+    permission_classes = (permissions.IsAdminUser,)
     queryset = LedLight.objects.all()
     serializer_class = LedLightSerializer
 
 
 class LedLightState(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = (IsAdminUser,)
+    permission_classes = (permissions.IsAdminUser,)
     queryset = LedLight.objects.all()
     serializer_class = LedLightStateSerializer
 
@@ -54,3 +54,37 @@ def write_data_points(request, format=None):
         write_led_light_data()
         html = "<html><body>Done.</body></html>"
         return HttpResponse(html)
+
+
+class PhotoViewSet(viewsets.ModelViewSet):
+    """Generic view for API methods. Handles POST and GET automatically"""
+    queryset = Photo.objects.all()
+    serializer_class = PhotoSerializer
+    permission_classes = (
+        permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly
+    )
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
+
+    @decorators.action(
+        detail=True,
+        methods=['PUT'],
+        serializer_class=PhotoFieldSerializer,
+        parser_classes=[parsers.MultiPartParser],
+    )
+    def photo(self, request, pk):
+        """Handles API PUT request for the "photo" instance to model "Photo"."""
+        obj = self.get_object()
+        serializer = self.serializer_class(
+            obj,
+            data=request.data,
+            partial=True,
+        )
+        if serializer.is_valid():
+            serializer.save()
+            return response.Response(serializer.data)
+        return response.Response(
+            serializer.errors,
+            status.HTTP_400_BAD_REQUEST,
+        )

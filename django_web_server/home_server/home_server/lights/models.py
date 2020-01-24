@@ -3,8 +3,8 @@ import uuid
 from django.db import models
 from django.urls import reverse
 
-from .service import request_get
-from .lightbulb import LightBulb, LightBulbSettings, LightBulbRelay
+from .services import request_get
+from .lightbulbs import LightBulb, LightBulbSettings, LightBulbRelay
 
 DEBUG = False
 

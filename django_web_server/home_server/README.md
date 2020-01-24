@@ -20,11 +20,11 @@ python manage.py migrate
 
 With DEBUG=True the python web server located in the folder one level up with the name "mock_things" is started with docker-compose automatically.
 
-Note that the mock-address "http://mock-service:9753" in home_server/things/models only work when running from docker-compose. This should be chánged to "http://localhost:9753" when running in env.
+Note that the mock-address "http://mock-service:9753" in home_server/lights/models only work when running from docker-compose. This should be chánged to "http://localhost:9753" when running in env.
 
 ## Initiate thing
 
-Either in Django admin or trough the API documentet below: Create a things.models.LedLight with empty IP-field and let the state be "-".
+Either in Django admin or trough the API documentet below: Create a lights.models.LedLight with empty IP-field and let the state be "-".
 When you create the LedLight object, an object from analytics.models.LedLightData will be created automatically, with field active=False. Also a csv file will be automatically created as home_server/data_files/ledlights/*id*.csv.
 
 Make sure the mock-service is running by ssh into the web container and curl a response:
@@ -87,11 +87,11 @@ Same as development with some exceptions:
 * Comment out the mock-service part from docker-compose.yml
 * Create a LedLight object without address. Get the arduino going and give it the uuid generated as the LedLight objects uuid.
 * Make sure to note the arduino local IP and port number. Update the LedLight object with these.
-* Either set DEBUG = False in settings, or set DEBUG as False in things.models.
+* Either set DEBUG = False in settings, or set DEBUG as False in lights.models.
 
 # API Endpoints:
 
-## /things/ledlights/
+## /lights/ledlights/
 
 ### GET
 
@@ -105,7 +105,7 @@ payload should look like:
     "title": "some_title",
 }
 ```
-## /things/ledlights/uuid/
+## /lights/ledlights/uuid/
 
 ### GET
 
@@ -115,7 +115,7 @@ See info (state) about a specific ledlight
 
 deletes instance
 
-## /things/ledlights/uuid/state/
+## /lights/ledlights/uuid/state/
 
 ### PUT
 
@@ -163,7 +163,7 @@ Turns led light on.
 * [ARDUINO] Fix getState in ESP
 * [THINGS] maybe do something with the returned response from arduinos?
 * [THINGS] Handle other cases than 200 in analytics.models.write_data_point
-* [ARDUINO]+[THINGS] LedLight.get_state() : 
+* [ARDUINO]+[THINGS] LedLight.get_state() :
     - response message from ESP8266WebServer must be extracted (use print in save method)
     - ESP8266WebServer has status code messages. extract this and raise if not 200.
     - catch exception that is reised when no response is given.

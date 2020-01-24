@@ -3,7 +3,7 @@ import uuid
 from django.db import models
 from django.urls import reverse
 
-from .service import request_get
+from .services import request_get
 
 
 class LightBulb(models.Model):
@@ -101,10 +101,9 @@ class LightBulbSettings(models.Model):
             if rules:
                 st = ''
                 for el in rules.split(','):
-                    st += el.split('-')[0] + '-0123456-' + el.split('-')[1] + ','
+                    st += el.split('-')[0] + '-0123456-' \
+                        + el.split('-')[1] + ','
                 params["schedule_rules"] = [st]
-            print('GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG')
-            print(params["schedule_rules"])
             response = request_get(url, params)
             if response["status"] == 200:
                 self.state = response["content"]

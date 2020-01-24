@@ -1,16 +1,21 @@
 from django.contrib import admin
 
-from .models import LedLight, LightBulb, LightBulbSettings, LightBulbRelay
+from .models import (
+    LedLight,
+    LightBulb,
+    LightBulbSettings,
+    LightBulbRelay,
+)
 
 
 @admin.register(LedLight)
 class LedLightAdmin(admin.ModelAdmin):
-    list_display = ('title', 'address', 'id', 'state')
+    list_display = ('title', 'address', 'state')
     list_filter = ('state', 'owner')
 
 @admin.register(LightBulb)
 class LightBulbAdmin(admin.ModelAdmin):
-    list_display = ('title', 'address', 'id', 'state')
+    list_display = ('title', 'address', 'state')
     list_filter = ('state', 'owner')
 
 @admin.register(LightBulbSettings)

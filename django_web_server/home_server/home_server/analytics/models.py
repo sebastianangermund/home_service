@@ -3,7 +3,7 @@ import os
 from datetime import datetime
 from django.db import models
 
-from ..things.models import LedLight
+from ..lights.models import LedLight
 
 BASE_DIR = os.path.dirname(os.path.dirname(
     os.path.dirname(os.path.abspath(__file__))))
@@ -41,4 +41,3 @@ class LedLightData(models.Model):
         f = open(database_file, 'w+')
         f.write(data)
         f.close()
-

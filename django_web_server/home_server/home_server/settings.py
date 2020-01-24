@@ -23,9 +23,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'kg!wm631erif3lkz8_@vzsjzc6l4abb8a(w=6d*u3*_dd1n%vt'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['.pt-sandra.se', 'pt-sandra.se', '192.168.1.1', '192.168.1.11', '192.168.1.2', '192.168.1.7', 'localhost', '62.63.213.62']
+ALLOWED_HOSTS = ['.pt-sandra.se', 'pt-sandra.se','localhost', '62.63.213.62']
 
 # CSRF_USE_SESSIONS = True
 
@@ -45,7 +45,8 @@ THIRD_PARTY_APPS = [
 ]
 
 LOCAL_APPS = [
-    'home_server.things.apps.ThingsConfig',
+    'home_server.lights.apps.LightsConfig',
+    'home_server.cameras.apps.CameraConfig',
     'home_server.analytics.apps.AnalyticsConfig',
     'home_server.services.apps.ServicesConfig',
 ]
@@ -95,14 +96,10 @@ DATABASES = {
         'HOST': 'localhost',
         'PORT': '',
     },
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.postgresql',
-    #     'NAME': 'postgres',
-    #     'USER': 'postgres',
-	# 'PASSWORD': '123Hejsan',
-    #     'HOST': 'db',
-    #     'PORT': 5432,
-    # }
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
 }
 
 
@@ -147,5 +144,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
