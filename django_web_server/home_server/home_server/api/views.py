@@ -66,26 +66,3 @@ class PhotoViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
-
-    @decorators.action(
-        detail=True,
-        methods=['PUT'],
-        serializer_class=PhotoFieldSerializer,
-        parser_classes=[parsers.MultiPartParser],
-        permission_classes=[permissions.IsAdminUser],
-    )
-    def photo(self, request, pk):
-        """Handles API PUT request for the "photo" instance to model "Photo"."""
-        obj = self.get_object()
-        serializer = self.serializer_class(
-            obj,
-            data=request.data,
-            partial=True,
-        )
-        if serializer.is_valid():
-            serializer.save()
-            return response.Response(serializer.data)
-        return response.Response(
-            serializer.errors,
-            status.HTTP_400_BAD_REQUEST,
-        )

@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'kg!wm631erif3lkz8_@vzsjzc6l4abb8a(w=6d*u3*_dd1n%vt'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['.pt-sandra.se', 'pt-sandra.se','localhost', '62.63.213.62']
 
@@ -122,9 +122,12 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.SessionAuthentication',
-    )
+    # 'DEFAULT_AUTHENTICATION_CLASSES': (
+    #     'rest_framework.authentication.SessionAuthentication',
+    # ),
+   'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAdminUser'
+   ),
 }
 
 # Internationalization

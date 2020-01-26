@@ -26,7 +26,7 @@ def submission_delete(sender, instance, **kwargs):
 def initialize_csv_file(instance, created, **kwargs):
     if created:
         data = f'timestamp: -, state: -'
-        database_file_path = f'data_files/ledlights/{instance.pk}.csv'
+        database_file_path = f'assets/ledlights/{instance.pk}.csv'
         database_file = os.path.join(BASE_DIR, database_file_path)
         f = open(database_file, 'w+')
         f.write(data)

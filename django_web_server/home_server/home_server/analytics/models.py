@@ -14,7 +14,7 @@ class LedLightData(models.Model):
 
     """
     state_data = models.FileField(blank=True,
-                                  upload_to='data_files/ledlights/')
+                                  upload_to='assets/ledlights/')
     led_light = models.OneToOneField(LedLight, on_delete=models.CASCADE,
                                      related_name='ledlightdata')
     active = models.BooleanField(default=False)
