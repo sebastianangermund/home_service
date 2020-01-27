@@ -56,8 +56,13 @@ class Photo(models.Model):
             super(Photo, self).save(*args, **kwargs)
             return
         self.take_new = False
-        photo_file = take_picture(self.camera.address)
-        photo_path = os.path.join(BASE_DIR, photo_file)
         utc_now = str(datetime.utcnow())
         photo_name = f'{utc_now}.jpg'
+        try:
+            taken = take_picture(self.camera.address, photo_name)
+        except Exception:
+            super(Photo, self).save(*args, **kwargs)
+            return
+        photo_name = f'assets/photos/{photo_name}'
+        photo_path = os.path.join(BASE_DIR, photo_name)
         self.photo.save(photo_name, File(open(photo_path, 'rb')))

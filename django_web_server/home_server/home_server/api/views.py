@@ -47,14 +47,6 @@ class LedLightState(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = LedLightStateSerializer
 
 
-@api_view(['GET'])
-def write_data_points(request, format=None):
-    if request.method == 'GET':
-        write_led_light_data()
-        html = "<html><body>Done.</body></html>"
-        return HttpResponse(html)
-
-
 class PhotoViewSet(viewsets.ModelViewSet):
     """Generic view for API methods. Handles POST and GET automatically"""
     permission_classes = (
@@ -66,3 +58,11 @@ class PhotoViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
+
+
+@api_view(['GET'])
+def write_data_points(request, format=None):
+    if request.method == 'GET':
+        write_led_light_data()
+        html = "<html><body>Done.</body></html>"
+        return HttpResponse(html)
