@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'kg!wm631erif3lkz8_@vzsjzc6l4abb8a(w=6d*u3*_dd1n%vt'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['.pt-sandra.se', 'pt-sandra.se','localhost', '62.63.213.62', '192.168.1.2', '127.0.0.1']
 

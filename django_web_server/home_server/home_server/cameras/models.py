@@ -63,6 +63,6 @@ class Photo(models.Model):
         except Exception:
             super(Photo, self).save(*args, **kwargs)
             return
-        photo_name = f'assets/photos/{photo_name}'
-        photo_path = os.path.join(BASE_DIR, photo_name)
-        self.photo.save(photo_name, File(open(photo_path, 'rb')))
+        rel_path = f'assets/photos/{photo_name}'
+        abs_path = os.path.join(BASE_DIR, rel_path)
+        self.photo.save(photo_name, File(open(abs_path, 'rb')))
