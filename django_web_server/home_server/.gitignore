@@ -13,3 +13,5 @@ local_settings.py
 .DS_Store
 __pycache__
 *.py[co]
+
+*secret*

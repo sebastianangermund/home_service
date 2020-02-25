@@ -9,7 +9,7 @@ def take_picture(camera_address, photo_name):
     try:
         camera = PiCamera()
         camera.start_preview()
-        sleep(3)
+        sleep(5)
         camera.capture(path)
         camera.stop_preview()
         camera.close()

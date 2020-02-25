@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
+from ..secret import ALLOWED_HOSTS, SECRET_KEY
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -28,6 +29,7 @@ DEBUG = False
 ALLOWED_HOSTS = ['.pt-sandra.se', 'pt-sandra.se','localhost', '62.63.213.62', '192.168.1.2', '127.0.0.1']
 
 # CSRF_USE_SESSIONS = True
+
 
 # Application definition
 
