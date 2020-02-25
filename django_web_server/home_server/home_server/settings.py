@@ -11,25 +11,29 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
-from ..secret import ALLOWED_HOSTS, SECRET_KEY
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+SECRET = os.path.join(BASE_DIR, 'secret.py')
+
+with open('/home/pi/Projects/home_service/django_web_server/home_server/secret_local_key.txt') as f:
+    SECRET_KEY = f.read().strip()
+
+with open('/home/pi/Projects/home_service/django_web_server/home_server/secret_allowed_hosts.txt') as f:
+    HOSTS = f.read().strip()
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'kg!wm631erif3lkz8_@vzsjzc6l4abb8a(w=6d*u3*_dd1n%vt'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['.pt-sandra.se', 'pt-sandra.se','localhost', '62.63.213.62', '192.168.1.2', '127.0.0.1']
-
 # CSRF_USE_SESSIONS = True
 
+ALLOWED_HOSTS = HOSTS.split(',')
 
 # Application definition
 
