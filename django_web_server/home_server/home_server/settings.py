@@ -15,12 +15,10 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-SECRET = os.path.join(BASE_DIR, 'secret.py')
-
-with open('/home/pi/Projects/home_service/django_web_server/home_server/secret_local_key.txt') as f:
+with open(os.path.join(BASE_DIR, 'secret_local_key.txt')) as f:
     SECRET_KEY = f.read().strip()
 
-with open('/home/pi/Projects/home_service/django_web_server/home_server/secret_allowed_hosts.txt') as f:
+with open(os.path.join(BASE_DIR, 'secret_allowed_hosts.txt')) as f:
     HOSTS = f.read().strip()
 
 # Quick-start development settings - unsuitable for production
@@ -53,6 +51,7 @@ THIRD_PARTY_APPS = [
 LOCAL_APPS = [
     'home_server.lights.apps.LightsConfig',
     'home_server.cameras.apps.CameraConfig',
+    'home_server.powerswitches.apps.PowerSwitchConfig',
     'home_server.analytics.apps.AnalyticsConfig',
     'home_server.services.apps.ServicesConfig',
 ]
